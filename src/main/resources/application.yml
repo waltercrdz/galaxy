@@ -1,0 +1,19 @@
+server:
+  port:
+    8080
+  context-path:
+    /meli
+galaxy:
+  planets:
+    - name: Vulcano
+      distanceFromSun: 1000
+      angularRate: 45
+      clockwise: false
+    - name: Ferengi
+      distanceFromSun: 500
+      angularRate: 90
+      clockwise: true
+    - name: Betasoide
+      distanceFromSun: 2000
+      angularRate: 3
+      clockwise: true
