@@ -53,7 +53,7 @@ public class GalaxyLoader implements InitializingBean {
 			map.put(planet.getName(), planet);
 		});
 		
-		Galaxy galaxy = new Galaxy.Builder().planets(map).droughtDays(0).rainyDays(0).optimalDays(0).days(Maps.newHashMap()).build();
+		Galaxy galaxy = new Galaxy.Builder().planets(map).droughtDays(0).rainyDays(0).optimalDays(0).noneDays(0).days(Maps.newHashMap()).build();
 		
 		Integer counter = 1;
 		for (; counter <= DAYS_COUNT; counter++) {

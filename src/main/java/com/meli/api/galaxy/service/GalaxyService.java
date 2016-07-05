@@ -88,6 +88,9 @@ public class GalaxyService {
 		} else if(this.isOptimalWeather(vulcano, ferengi, betasoide)) {
 			galaxy.setOptimalDays(galaxy.getOptimalDays() + 1);
 			galaxy.getDays().put(day, new StatusDay.Builder().day(day).weather(Weather.optimal).build());
+		} else {
+			galaxy.setNoneDays(galaxy.getNoneDays() + 1);
+			galaxy.getDays().put(day, new StatusDay.Builder().day(day).weather(Weather.none).build());
 		}
 	}
 	
