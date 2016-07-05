@@ -3,17 +3,16 @@ package com.meli.api.galaxy.model;
 import com.meli.api.galaxy.utils.PlanetUtils;
 
 public class Planet {
-	
+
 	private String name;
 	private Integer distanceFromSun;
 	private Integer angle;
 	private Integer angularRate;
-	private Double xpos;
-	private Double ypos;
+	private Coordinates coordinate;
 
-	//TODO strategy
+	// TODO strategy
 	private boolean clockwise;
-	
+
 	public Planet() {
 	}
 
@@ -23,21 +22,22 @@ public class Planet {
 		this.angle = builder.angle;
 		this.angularRate = builder.angularRate;
 		this.clockwise = builder.clockwise;
-		this.xpos = builder.xpos;
-		this.ypos = builder.ypos;
+		this.coordinate = builder.coordinate;
 	}
-	
+
 	public void move(Integer day) {
 		if (!this.clockwise) {
 			this.angle = PlanetUtils.getAngleMinor360(day * this.angularRate);
 		} else {
 			this.angle = 360 - PlanetUtils.getAngleMinor360(day * this.angularRate);
 		}
-		
-		this.xpos = PlanetUtils.getXCoordinates(this.angle, this.distanceFromSun);
-		this.ypos = PlanetUtils.getYCoordinates(this.angle, this.distanceFromSun);
+
+		this.coordinate = new Coordinates.Builder()
+				.xpos(PlanetUtils.getXCoordinates(this.angle, this.distanceFromSun))
+				.ypos(PlanetUtils.getYCoordinates(this.angle, this.distanceFromSun))
+				.build();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -52,14 +52,6 @@ public class Planet {
 
 	public boolean isClockwise() {
 		return clockwise;
-	}
-
-	public Double getXpos() {
-		return xpos;
-	}
-
-	public Double getYpos() {
-		return ypos;
 	}
 
 	public Integer getAngle() {
@@ -82,16 +74,16 @@ public class Planet {
 		this.angularRate = angularRate;
 	}
 
-	public void setXpos(Double xpos) {
-		this.xpos = xpos;
-	}
-
-	public void setYpos(Double ypos) {
-		this.ypos = ypos;
-	}
-
 	public void setClockwise(boolean clockwise) {
 		this.clockwise = clockwise;
+	}
+
+	public Coordinates getCoordinate() {
+		return coordinate;
+	}
+
+	public void setCoordinate(Coordinates coordinate) {
+		this.coordinate = coordinate;
 	}
 
 	@Override
@@ -101,10 +93,9 @@ public class Planet {
 		result = prime * result + ((angle == null) ? 0 : angle.hashCode());
 		result = prime * result + ((angularRate == null) ? 0 : angularRate.hashCode());
 		result = prime * result + (clockwise ? 1231 : 1237);
+		result = prime * result + ((coordinate == null) ? 0 : coordinate.hashCode());
 		result = prime * result + ((distanceFromSun == null) ? 0 : distanceFromSun.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((xpos == null) ? 0 : xpos.hashCode());
-		result = prime * result + ((ypos == null) ? 0 : ypos.hashCode());
 		return result;
 	}
 
@@ -129,6 +120,11 @@ public class Planet {
 			return false;
 		if (clockwise != other.clockwise)
 			return false;
+		if (coordinate == null) {
+			if (other.coordinate != null)
+				return false;
+		} else if (!coordinate.equals(other.coordinate))
+			return false;
 		if (distanceFromSun == null) {
 			if (other.distanceFromSun != null)
 				return false;
@@ -139,23 +135,13 @@ public class Planet {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (xpos == null) {
-			if (other.xpos != null)
-				return false;
-		} else if (!xpos.equals(other.xpos))
-			return false;
-		if (ypos == null) {
-			if (other.ypos != null)
-				return false;
-		} else if (!ypos.equals(other.ypos))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "Planet [name=" + name + ", distanceFromSun=" + distanceFromSun + ", angle=" + angle + ", angularRate="
-				+ angularRate + ", xpos=" + xpos + ", ypos=" + ypos + ", clockwise=" + clockwise + "]";
+				+ angularRate + ", coordinate=" + coordinate + ", clockwise=" + clockwise + "]";
 	}
 
 	public static class Builder {
@@ -164,44 +150,38 @@ public class Planet {
 		private Integer angle;
 		private Integer angularRate;
 		private boolean clockwise;
-		private Double xpos;
-		private Double ypos;
-		
+		private Coordinates coordinate;
+
 		public Builder name(String name) {
 			this.name = name;
 			return this;
 		}
-		
+
 		public Builder distanceFromSun(Integer distanceFromSun) {
 			this.distanceFromSun = distanceFromSun;
 			return this;
 		}
-		
+
 		public Builder angle(Integer angle) {
 			this.angle = angle;
 			return this;
 		}
-		
+
 		public Builder angularRate(Integer angularRate) {
 			this.angularRate = angularRate;
 			return this;
 		}
-		
+
 		public Builder clockwise(boolean clockwise) {
 			this.clockwise = clockwise;
 			return this;
 		}
-		
-		public Builder xpos(Double xpos) {
-			this.xpos = xpos;
+
+		public Builder coordinate(Coordinates coordinate) {
+			this.coordinate = coordinate;
 			return this;
 		}
-		
-		public Builder ypos(Double ypos) {
-			this.ypos = ypos;
-			return this;
-		}
-		
+
 		public Planet build() {
 			return new Planet(this);
 		}

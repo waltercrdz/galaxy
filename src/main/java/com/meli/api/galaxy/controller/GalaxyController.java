@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.meli.api.galaxy.model.Galaxy;
+import com.meli.api.galaxy.model.StatusDay;
 import com.meli.api.galaxy.service.GalaxyService;
 
 @RestController
@@ -31,12 +32,12 @@ public class GalaxyController {
 		return new ResponseEntity<Galaxy>(galaxy, HttpStatus.OK);
 	}
 
-//	@RequestMapping(value = "weather", method = RequestMethod.GET)
-//	public ResponseEntity<StatusDay> getWeatherByDay(@RequestParam(value = "day", required = true) Integer day) {
-//		if (day < 0)
-//			return new ResponseEntity<StatusDay>(HttpStatus.BAD_REQUEST);
-//
-//		Galaxy galaxy = this.service.getByDay(day);
-//		return new ResponseEntity<Galaxy>(galaxy, HttpStatus.OK);
-//	}
+	@RequestMapping(value = "weather/{day}", method = RequestMethod.GET)
+	public ResponseEntity<StatusDay> getWeatherByDay(@PathVariable Integer day) {
+		if (day < 0)
+			return new ResponseEntity<StatusDay>(HttpStatus.BAD_REQUEST);
+
+		StatusDay weather = this.service.getWeatherByDay(day);
+		return new ResponseEntity<StatusDay>(weather, HttpStatus.OK);
+	}
 }

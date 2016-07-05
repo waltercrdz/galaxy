@@ -1,5 +1,7 @@
 package com.meli.api.galaxy.utils;
 
+import com.meli.api.galaxy.model.Coordinates;
+
 public class PlanetUtils {
 	
 	public static Double getXCoordinates(Integer angle, Integer distanceFromSun) {
@@ -28,8 +30,15 @@ public class PlanetUtils {
 		return angle1.equals(opposite);
 	}
 	
-	public Double getOrientation(Double x1, Double y1, Double x2, Double y2, Double x3, Double y3){
-    	return (x1 - x3)*(y2 - y3)-(y1 - y3)*(x2 - x3);
+	public static boolean isPointInTriangle(Coordinates p1, Coordinates p2, Coordinates p3, Coordinates p4) {
+		if (getOrientation(p1, p2, p3) >= 0)
+			return (getOrientation(p1, p2, p4) >= 0)  &&  (getOrientation(p2, p3, p4) >= 0)  &&  (getOrientation(p3, p1, p4) >= 0);
+		else
+			return (getOrientation(p1, p2, p4) < 0)  &&  (getOrientation(p2, p3, p4) < 0)  &&  (getOrientation(p3, p1, p4) < 0);
+	}
+	
+	private static Double getOrientation(Coordinates p1, Coordinates p2, Coordinates p3){
+    	return (p1.getXpos() - p3.getXpos())*(p2.getYpos() - p3.getYpos())-(p1.getYpos() - p3.getYpos())*(p2.getXpos() - p3.getXpos());
     }
 	
 	private static Double angleToRadians(Integer angle) {

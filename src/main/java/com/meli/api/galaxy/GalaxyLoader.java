@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
 import com.meli.api.galaxy.configuration.GalaxySettings;
+import com.meli.api.galaxy.model.Coordinates;
 import com.meli.api.galaxy.model.Galaxy;
 import com.meli.api.galaxy.model.Planet;
 import com.meli.api.galaxy.service.GalaxyService;
@@ -48,8 +49,7 @@ public class GalaxyLoader implements InitializingBean {
 		Map<String, Planet> map = Maps.newHashMap();
 		this.settings.getPlanets().stream().forEach(planet -> {
 			planet.setAngle(0);
-			planet.setXpos(planet.getDistanceFromSun().doubleValue());
-			planet.setYpos(0D);
+			planet.setCoordinate(new Coordinates.Builder().xpos(planet.getDistanceFromSun().doubleValue()).ypos(0D).build());
 			map.put(planet.getName(), planet);
 		});
 		
