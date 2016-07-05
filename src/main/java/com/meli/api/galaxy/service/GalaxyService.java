@@ -85,9 +85,10 @@ public class GalaxyService {
 			if (Objects.isNull(galaxy.getMaxRainyDay()) || galaxy.getMaxRainyDay().getPerimeter() < currentRainyDay.getPerimeter()) {
 				galaxy.setMaxRainyDay(currentRainyDay);
 			}
+		} else if(this.isOptimalWeather(vulcano, ferengi, betasoide)) {
+			galaxy.setOptimalDays(galaxy.getOptimalDays() + 1);
+			galaxy.getDays().put(day, new StatusDay.Builder().day(day).weather(Weather.optimal).build());
 		}
-//		} else if(this.isOptimalWeather(vulcano, ferengi, betasoide)) {
-//			
 	}
 	
 	private boolean isDroughtWeather(Planet vulcano, Planet ferengi, Planet betasoide) {
@@ -104,6 +105,6 @@ public class GalaxyService {
 	}
 	
 	private boolean isOptimalWeather(Planet vulcano, Planet ferengi, Planet betasoide) {
-		return false;
+		return PlanetUtils.areAlignedButNotWithCenter(vulcano.getCoordinate(), ferengi.getCoordinate(), betasoide.getCoordinate());
 	}
 }

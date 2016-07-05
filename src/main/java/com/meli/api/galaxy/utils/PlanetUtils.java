@@ -47,8 +47,19 @@ public class PlanetUtils {
 		
 		return perimeter;
 	}
+	
+	public static boolean areAlignedButNotWithCenter(Coordinates p0, Coordinates p1, Coordinates p2) {
+		Double side1 = (p1.getXpos() - p0.getXpos()) / (p2.getXpos() - p1.getXpos());
+		Double side2 = (p1.getYpos() - p0.getYpos()) / (p2.getYpos() - p1.getYpos());
+		
+		return Math.abs(side1 - side2) >= 0 && Math.abs(side1 - side2) <= 0.1;
+	}
+	
+	public static Double slope(Coordinates p0, Coordinates p1) {
+		return (p1.getYpos() - p0.getYpos()) / (p1.getXpos() - p0.getXpos());
+	}
 
-	public static Double distance(Coordinates pFrom, Coordinates pTo) {
+	private static Double distance(Coordinates pFrom, Coordinates pTo) {
 		return Math.sqrt(Math.pow(pTo.getXpos() - pFrom.getXpos(), 2) + Math.pow(pTo.getYpos() - pFrom.getYpos(), 2));
 	}
 
