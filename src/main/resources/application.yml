@@ -3,17 +3,22 @@ server:
     8080
   context-path:
     /meli
+spring:
+  data:
+    mongodb:
+      uri: "mongodb://localhost/meli-galaxy"
+      database: meli-galaxy
 galaxy:
   planets:
-    - name: Vulcano
+    - name: vulcano
       distanceFromSun: 1000
-      angularRate: 45
+      angularRate: 5
       clockwise: false
-    - name: Ferengi
+    - name: ferengi
       distanceFromSun: 500
-      angularRate: 90
+      angularRate: 1
       clockwise: true
-    - name: Betasoide
+    - name: betasoide
       distanceFromSun: 2000
       angularRate: 3
       clockwise: true

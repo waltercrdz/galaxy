@@ -28,7 +28,6 @@ public class Planet {
 	}
 	
 	public void move(Integer day) {
-		//TODO falta mover segun sentido anti-horario y horario
 		if (!this.clockwise) {
 			this.angle = PlanetUtils.getAngleMinor360(day * this.angularRate);
 		} else {

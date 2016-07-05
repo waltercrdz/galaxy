@@ -16,7 +16,7 @@ import com.meli.api.galaxy.service.GalaxyService;
 public class GalaxyController {
 
 	private final GalaxyService service;
-	
+
 	@Autowired
 	public GalaxyController(GalaxyService service) {
 		this.service = service;
@@ -26,8 +26,17 @@ public class GalaxyController {
 	public ResponseEntity<Galaxy> getGalaxy(@PathVariable Integer day) {
 		if (day < 0)
 			return new ResponseEntity<Galaxy>(HttpStatus.BAD_REQUEST);
-		
+
 		Galaxy galaxy = this.service.getByDay(day);
 		return new ResponseEntity<Galaxy>(galaxy, HttpStatus.OK);
 	}
+
+//	@RequestMapping(value = "weather", method = RequestMethod.GET)
+//	public ResponseEntity<StatusDay> getWeatherByDay(@RequestParam(value = "day", required = true) Integer day) {
+//		if (day < 0)
+//			return new ResponseEntity<StatusDay>(HttpStatus.BAD_REQUEST);
+//
+//		Galaxy galaxy = this.service.getByDay(day);
+//		return new ResponseEntity<Galaxy>(galaxy, HttpStatus.OK);
+//	}
 }
