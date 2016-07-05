@@ -16,6 +16,7 @@ public class Galaxy {
 	private Integer droughtDays;
 	private Integer optimalDays;
 	private Map<Integer, StatusDay> days;
+	private RainyDay maxRainyDay;
 	
 	public Galaxy() {}
 
@@ -25,6 +26,7 @@ public class Galaxy {
 		this.droughtDays = builder.droughtDays;
 		this.optimalDays = builder.optimalDays;
 		this.days = builder.days;
+		this.maxRainyDay = builder.maxRainyDay;
 	}
 	
 	public void movePlanets(Integer day) {
@@ -59,6 +61,14 @@ public class Galaxy {
 		return optimalDays;
 	}
 
+	public RainyDay getMaxRainyDay() {
+		return maxRainyDay;
+	}
+
+	public void setMaxRainyDay(RainyDay maxRainyDay) {
+		this.maxRainyDay = maxRainyDay;
+	}
+
 	public void setOptimalDays(Integer optimalDays) {
 		this.optimalDays = optimalDays;
 	}
@@ -78,6 +88,7 @@ public class Galaxy {
 		result = prime * result + ((days == null) ? 0 : days.hashCode());
 		result = prime * result + ((droughtDays == null) ? 0 : droughtDays.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((maxRainyDay == null) ? 0 : maxRainyDay.hashCode());
 		result = prime * result + ((optimalDays == null) ? 0 : optimalDays.hashCode());
 		result = prime * result + ((planets == null) ? 0 : planets.hashCode());
 		result = prime * result + ((rainyDays == null) ? 0 : rainyDays.hashCode());
@@ -108,6 +119,11 @@ public class Galaxy {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (maxRainyDay == null) {
+			if (other.maxRainyDay != null)
+				return false;
+		} else if (!maxRainyDay.equals(other.maxRainyDay))
+			return false;
 		if (optimalDays == null) {
 			if (other.optimalDays != null)
 				return false;
@@ -129,7 +145,7 @@ public class Galaxy {
 	@Override
 	public String toString() {
 		return "Galaxy [id=" + id + ", planets=" + planets + ", rainyDays=" + rainyDays + ", droughtDays=" + droughtDays
-				+ ", optimalDays=" + optimalDays + ", days=" + days + "]";
+				+ ", optimalDays=" + optimalDays + ", days=" + days + ", maxRainyDay=" + maxRainyDay + "]";
 	}
 
 	public static class Builder {
@@ -139,6 +155,7 @@ public class Galaxy {
 		private Integer droughtDays;
 		private Integer optimalDays;
 		private Map<Integer, StatusDay> days;
+		private RainyDay maxRainyDay;
 		
 		public Builder planets(Map<String, Planet> planets) {
 			this.planets = planets;
@@ -162,6 +179,11 @@ public class Galaxy {
 		
 		public Builder days(Map<Integer, StatusDay> days) {
 			this.days = days;
+			return this;
+		}
+		
+		public Builder maxRainyDay(RainyDay maxRainyDay) {
+			this.maxRainyDay = maxRainyDay;
 			return this;
 		}
 		

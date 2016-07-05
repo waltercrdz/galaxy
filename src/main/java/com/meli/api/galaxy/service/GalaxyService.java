@@ -12,6 +12,7 @@ import com.google.common.base.Preconditions;
 import com.meli.api.galaxy.model.Coordinates;
 import com.meli.api.galaxy.model.Galaxy;
 import com.meli.api.galaxy.model.Planet;
+import com.meli.api.galaxy.model.RainyDay;
 import com.meli.api.galaxy.model.StatusDay;
 import com.meli.api.galaxy.model.Weather;
 import com.meli.api.galaxy.repository.GalaxyRepository;
@@ -78,6 +79,12 @@ public class GalaxyService {
 		} else if(this.isRainyWeather(vulcano, ferengi, betasoide)) {
 			galaxy.setRainyDays(galaxy.getRainyDays() + 1);
 			galaxy.getDays().put(day, new StatusDay.Builder().day(day).weather(Weather.rainy).build());
+			
+			RainyDay currentRainyDay = new RainyDay.Builder().day(day).perimeter(PlanetUtils.perimeter(vulcano.getCoordinate(), ferengi.getCoordinate(), betasoide.getCoordinate())).build();
+			
+			if (Objects.isNull(galaxy.getMaxRainyDay()) || galaxy.getMaxRainyDay().getPerimeter() < currentRainyDay.getPerimeter()) {
+				galaxy.setMaxRainyDay(currentRainyDay);
+			}
 		}
 //		} else if(this.isOptimalWeather(vulcano, ferengi, betasoide)) {
 //			
