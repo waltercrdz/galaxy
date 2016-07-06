@@ -1,5 +1,7 @@
 package com.meli.api.galaxy.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +39,30 @@ public class GalaxyController {
 		if (day < 0)
 			return new ResponseEntity<StatusDay>(HttpStatus.BAD_REQUEST);
 
-		StatusDay weather = this.service.getWeatherByDay(day);
-		return new ResponseEntity<StatusDay>(weather, HttpStatus.OK);
+		Optional<StatusDay> optionalResult = this.service.getWeatherByDay(day);
+		
+		if (!optionalResult.isPresent()) {
+			return new ResponseEntity<StatusDay>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<StatusDay>(optionalResult.get(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "weather/drought-count", method = RequestMethod.GET)
+	public ResponseEntity<Integer> getDroughtDays() {
+		Integer droughtCount = this.service.getDroughtDays();
+		return new ResponseEntity<Integer>(droughtCount, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "weather/rainy-count", method = RequestMethod.GET)
+	public ResponseEntity<Integer> getRainyDays() {
+		Integer rainyCount = this.service.getRainyDays();
+		return new ResponseEntity<Integer>(rainyCount, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "weather/optimal-count", method = RequestMethod.GET)
+	public ResponseEntity<Integer> getOptimalDays() {
+		Integer optimalCount = this.service.getOptimalDays();
+		return new ResponseEntity<Integer>(optimalCount, HttpStatus.OK);
 	}
 }

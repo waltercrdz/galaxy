@@ -1,7 +1,9 @@
 package com.meli.api.galaxy.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import com.meli.api.galaxy.configuration.GalaxySettings;
 import com.meli.api.galaxy.model.Coordinates;
 import com.meli.api.galaxy.model.Galaxy;
 import com.meli.api.galaxy.model.Planet;
@@ -22,12 +26,34 @@ import com.meli.api.galaxy.utils.PlanetUtils;
 public class GalaxyService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(GalaxyService.class);
+	
+	private final static long DAYS_COUNT = 365 * 10;
 
 	private GalaxyRepository repository;
+	private GalaxySettings settings;
 	
 	@Autowired
-	public GalaxyService(GalaxyRepository repository) {
+	public GalaxyService(GalaxyRepository repository, GalaxySettings settings) {
 		this.repository = repository;
+		this.settings = settings;
+	}
+	
+	public Galaxy generateGalaxy() {
+		Map<String, Planet> map = Maps.newHashMap();
+		this.settings.getPlanets().stream().forEach(planet -> {
+			planet.setAngle(0);
+			planet.setCoordinate(new Coordinates.Builder().xpos(planet.getDistanceFromSun().doubleValue()).ypos(0D).build());
+			map.put(planet.getName(), planet);
+		});
+		
+		Galaxy galaxy = new Galaxy.Builder().planets(map).droughtDays(0).rainyDays(0).optimalDays(0).days(Maps.newHashMap()).build();
+		
+		Integer counter = 1;
+		for (; counter <= DAYS_COUNT; counter++) {
+			this.predict(galaxy, counter);
+		}
+		
+		return galaxy;
 	}
 	
 	public boolean existsSomeGalaxy() {
@@ -40,23 +66,41 @@ public class GalaxyService {
 	}
 
 	public Galaxy getByDay(Integer day) {
-		List<Galaxy> resultSet = this.repository.findAll();
-		Galaxy galaxy = resultSet.get(0);
+		Galaxy galaxy = findGalaxy();
 		
 		this.predict(galaxy, day);
 		
 		LOG.info(galaxy.toString());
 		return galaxy;
 	}
-	
-	public StatusDay getWeatherByDay(Integer day) {
+
+	private Galaxy findGalaxy() {
 		List<Galaxy> resultSet = this.repository.findAll();
-		Galaxy galaxy = resultSet.get(0);
+		return resultSet.get(0);
+	}
+	
+	public Integer getDroughtDays() {
+		Galaxy galaxy = this.findGalaxy();
+		return galaxy.getDroughtDays();
+	}
+	
+	public Integer getRainyDays() {
+		Galaxy galaxy = this.findGalaxy();
+		return galaxy.getRainyDays();
+	}
+	
+	public Integer getOptimalDays() {
+		Galaxy galaxy = this.findGalaxy();
+		return galaxy.getOptimalDays();
+	}
+	
+	public Optional<StatusDay> getWeatherByDay(Integer day) {
+		Galaxy galaxy = findGalaxy();
 		
 		this.predict(galaxy, day);
 		
 		LOG.info(galaxy.toString());
-		return galaxy.getDays().get(day);
+		return Optional.ofNullable(galaxy.getDays().get(day));
 	}
 	
 	public void predict(Galaxy galaxy, Integer day) {
@@ -88,9 +132,6 @@ public class GalaxyService {
 		} else if(this.isOptimalWeather(vulcano, ferengi, betasoide)) {
 			galaxy.setOptimalDays(galaxy.getOptimalDays() + 1);
 			galaxy.getDays().put(day, new StatusDay.Builder().day(day).weather(Weather.optimal).build());
-		} else {
-			galaxy.setNoneDays(galaxy.getNoneDays() + 1);
-			galaxy.getDays().put(day, new StatusDay.Builder().day(day).weather(Weather.none).build());
 		}
 	}
 	

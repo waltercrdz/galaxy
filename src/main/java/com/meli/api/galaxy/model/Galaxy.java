@@ -15,7 +15,6 @@ public class Galaxy {
 	private Integer rainyDays;
 	private Integer droughtDays;
 	private Integer optimalDays;
-	private Integer noneDays;
 	private Map<Integer, StatusDay> days;
 	private RainyDay maxRainyDay;
 	
@@ -26,7 +25,6 @@ public class Galaxy {
 		this.rainyDays = builder.rainyDays;
 		this.droughtDays = builder.droughtDays;
 		this.optimalDays = builder.optimalDays;
-		this.noneDays = builder.noneDays;
 		this.days = builder.days;
 		this.maxRainyDay = builder.maxRainyDay;
 	}
@@ -41,14 +39,6 @@ public class Galaxy {
 
 	public void setPlanets(Map<String, Planet> planets) {
 		this.planets = planets;
-	}
-
-	public Integer getNoneDays() {
-		return noneDays;
-	}
-
-	public void setNoneDays(Integer noneDays) {
-		this.noneDays = noneDays;
 	}
 
 	public Integer getRainyDays() {
@@ -164,7 +154,6 @@ public class Galaxy {
 		private Integer rainyDays;
 		private Integer droughtDays;
 		private Integer optimalDays;
-		private Integer noneDays;
 		private Map<Integer, StatusDay> days;
 		private RainyDay maxRainyDay;
 		
@@ -185,11 +174,6 @@ public class Galaxy {
 		
 		public Builder optimalDays(Integer optimalDays) {
 			this.optimalDays = optimalDays;
-			return this;
-		}
-		
-		public Builder noneDays(Integer noneDays) {
-			this.noneDays = noneDays;
 			return this;
 		}
 		
