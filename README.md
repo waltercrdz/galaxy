@@ -1,4 +1,4 @@
-# meli-galaxy
+# galaxy
 
 ### How to run
 
