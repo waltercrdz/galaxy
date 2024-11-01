@@ -7,9 +7,10 @@ import org.springframework.context.annotation.Configuration;
 
 import com.google.common.collect.Lists;
 import com.meli.api.galaxy.model.Planet;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ConfigurationProperties(locations = "classpath:application.yml", prefix = "galaxy")
+@ConfigurationProperties(prefix = "galaxy")
 public class GalaxySettings {
 	
 	private List<Planet> planets = Lists.newLinkedList();

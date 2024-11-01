@@ -1,8 +1,8 @@
 server:
   port:
     8080
-  context-path:
-    /meli
+  servlet:
+    context-path: /api/v1
 spring:
   data:
     mongodb:
